@@ -502,6 +502,19 @@ public interface IRenderInterface {
 	 */	
 	public void gl_endShape(int type);
 	default void gl_endShape() {gl_endShape(-1);}
+	
+	///////////////////////
+	// point cloud
+	/**
+	 * draw a cloud of points with passed color values as an integrated shape
+	 * @param numPts number of points to draw
+	 * @param ptIncr incrementer between points, to draw only every 2nd, 3rd or more'th point
+	 * @param h_part_clr_int 2d array of per point 3-color stroke values
+	 * @param h_part_pos_x per point x value
+	 * @param h_part_pos_y per point y value
+	 * @param h_part_pos_z per point z value
+	 */
+	public void drawPointCloudWithColors(int numPts, int ptIncr, int[][] h_part_clr_int, float[] h_part_pos_x, float[] h_part_pos_y, float[] h_part_pos_z);
 
 	////////////////////////
 	// lines
@@ -553,6 +566,8 @@ public interface IRenderInterface {
 	 * @param endClr
 	 */
 	public void drawLine(myPointf a, myPointf b, int[] stClr, int[] endClr);
+	
+	
 	
 	////////////////////////
 	// splines
