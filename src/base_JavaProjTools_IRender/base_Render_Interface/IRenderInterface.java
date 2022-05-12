@@ -311,12 +311,16 @@ public interface IRenderInterface {
 	 *  @return style push depth
 	 */		
 	public int popJustStyleState();
+	
+	//////
+	// camera functions and projection matrices
+	
 	/**
 	 * set camera to passed 9-element values - should be called from window!
 	 * @param camVals
 	 */
 	public void setCameraWinVals(float[] camVals);
-	
+
 	/**
 	 * used to handle camera location/motion
 	 */
@@ -325,6 +329,41 @@ public interface IRenderInterface {
 	 * used to draw text on screen without changing mode - reverses camera orientation setting
 	 */
 	public void unSetCamOrient(float rx, float ry);	
+	
+	/**
+	 * set perspective matrix based on frustum for camera
+	 * @param left left coordinate of the clipping plane
+	 * @param right right coordinate of the clipping plane
+	 * @param bottom bottom coordinate of the clipping plane
+	 * @param top top coordinate of the clipping plane
+	 * @param near near component of the clipping plane (> 0)
+	 * @param far far component of the clipping plane (> near)
+	 */
+	public void setFrustum(float left, float right, float bottom, float top, float near, float far);
+	
+	/**
+	 * set perspective projection matrix for camera
+	 * @param fovy Vertical FOV
+	 * @param ar Aspect Ratio 
+	 * @param zNear Z position of near clipping plane
+	 * @param zFar Z position of far clipping plane 
+	 */
+	public void setPerspective(float fovy, float ar, float zNear, float zFar);
+	
+	/**
+	 * set orthographic projection matrix for camera (2d or 3d)
+	 * @param left left plane of clipping volume
+	 * @param right right plane of the clipping volume
+	 * @param bottom bottom plane of the clipping volume
+	 * @param top top plane of the clipping volume
+	 * @param near maximum distance from the origin to the viewer
+	 * @param far maximum distance from the origin away from the viewer
+	 */
+	public void setOrtho(float left, float right, float bottom, float top);
+	public void setOrtho(float left, float right, float bottom, float top, float near, float far);
+	//////
+	// end camera functions and projection matrices
+	
 	
 	/**
 	 * translate by the given values
