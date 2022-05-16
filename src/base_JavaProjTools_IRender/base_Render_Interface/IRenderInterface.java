@@ -72,11 +72,7 @@ public interface IRenderInterface {
 	 * colors used for axes
 	 */
 	public int[] rgbClrs = new int[]{gui_Red,gui_Green,gui_Blue};
-
-	/**
-	 * max ratio of width to height to use for windows
-	 */
-	public float maxWinRatio =  1.77777778f;
+	
 	/**
 	 * size of printed text (default is 12)
 	 */
@@ -102,16 +98,6 @@ public interface IRenderInterface {
 	 */
 	public float getFrameRate();
 	
-	/**
-	 * returns the width of the visible display in pxls
-	 * @return
-	 */
-	public int getDisplayWidth();
-	/**
-	 * returns the height of the visible display in pxls
-	 * @return
-	 */
-	public int getDisplayHeight();
 	/**
 	 * returns application window width in pxls
 	 * @return
@@ -669,7 +655,7 @@ public interface IRenderInterface {
 
 	
 	/**
-	 * draw a translucent represenation of a canvas plane ortho to eye-to-mouse vector
+	 * draw a translucent representation of a canvas plane ortho to eye-to-mouse vector
 	 * @param eyeToMse vector 
 	 * @param canvas3D
 	 */
