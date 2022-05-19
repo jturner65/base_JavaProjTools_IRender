@@ -426,7 +426,22 @@ public interface IRenderInterface {
 	 * enable lights in scene
 	 */
 	public void enableLights();	
+	
+	/**
+	 * Sets window title
+	 */
+	public void setWindowTitle(String applicationTitle, String windowName);
 		
+	/**
+	 * Set the background painted color
+	 * @param r
+	 * @param g
+	 * @param b
+	 * @param alpha
+	 */
+	public void setRenderBackground(int r, int g, int b, int alpha);
+	default void setRenderBackground(int[] clr, int alpha) {setRenderBackground(clr[0],clr[1],clr[2],alpha);}
+	
 	/**
 	 * set fill color by value
 	 * @param clr 1st 3 values denot integer color vals
@@ -794,8 +809,7 @@ public interface IRenderInterface {
 	 * @param c1
 	 * @param c2
 	 */
-	public void drawCylinder(myPointf A, myPointf B, float r, int c1, int c2);	
-	
+	public void drawCylinder(myPointf A, myPointf B, float r, int c1, int c2);		
 	
 	////////////////////
 	// showing double points as spheres or circles
@@ -980,8 +994,7 @@ public interface IRenderInterface {
 	 * @param txtAra
 	 * @param rectDims
 	 */
-	public void showBoxTxtAra(myPointf P, float rad, int det, int[] clrs, String[] txtAra, float[] rectDims);
-	
+	public void showBoxTxtAra(myPointf P, float rad, int det, int[] clrs, String[] txtAra, float[] rectDims);	
 
 	/**
 	 * return the size, in pixels, of the passed text string, accounting for the currently set font dimensions
@@ -989,48 +1002,6 @@ public interface IRenderInterface {
 	 * @return the size in pixels
 	 */
 	public float textWidth(String txt);
-	
-
-
-	
-	//////////////////////
-	// display text to console and screen
-	/**
-	 * return current array deque of console strings, to be printed to screen
-	 * @return
-	 */
-	public ArrayDeque<String> getConsoleStrings();	
-	
-	
-//	/**
-//	 * print out multiple-line text to screen
-//	 * @param str text to show
-//	 * @param x x displacement of text
-//	 * @param y y displacement of text
-//	 */
-//	public void ml_text(String str, float x, float y);	
-	
-	/**
-	 * print out a string ara to screen with perLine # of strings per line
-	 * @param sAra array of strings
-	 * @param perLine # of strings per line to display to screen
-	 */
-	public void outStr2ScrAra(String[] sAra, int perLine);
-	/**
-	 * print out a string to screen
-	 * @param str string to display
-	 */	
-	public void outStr2Scr(String str);
-	/**
-	 * print informational string data to console, and to screen
-	 * @param str
-	 * @param showDraw whether to show in graphical window as well as console
-	 */
-	public void outStr2Scr(String str, boolean showDraw);
-
-	
-	
-
 	//TODO put all functions commonly used from myDispWindow and its inheritors in here to support different rendering engines
 
 
