@@ -1,7 +1,5 @@
 package base_JavaProjTools_IRender.base_Render_Interface;
 
-import java.util.ArrayDeque;
-
 import base_Math_Objects.vectorObjs.doubles.myPoint;
 import base_Math_Objects.vectorObjs.doubles.myVector;
 import base_Math_Objects.vectorObjs.floats.myPointf;
@@ -443,6 +441,17 @@ public interface IRenderInterface {
 	default void setRenderBackground(int[] clr, int alpha) {setRenderBackground(clr[0],clr[1],clr[2],alpha);}
 	
 	/**
+	 * Load a background "skybox" sphere using texture from filename
+	 * @param filename Texture to use for background skybox sphere
+	 */
+	public void loadBkgndSphere(String filename);
+	
+	/**
+	 * Set loaded background sphere as skybox
+	 */
+	public void setBkgndSphere();
+	
+	/**
 	 * set fill color by value
 	 * @param clr 1st 3 values denot integer color vals
 	 * @param alpha 
@@ -497,6 +506,11 @@ public interface IRenderInterface {
 	 * @param det
 	 */	
 	public void setSphereDetail(int det);
+	/**
+	 * Get currently set global sphere detail
+	 * @return
+	 */
+	public int getSphereDetail();
 	
 	/////////////////////////
 	// display objects
@@ -1002,6 +1016,12 @@ public interface IRenderInterface {
 	 * @return the size in pixels
 	 */
 	public float textWidth(String txt);
+	
+	/**
+	 * Set the current text font size
+	 * @param size
+	 */
+	public void textSize(float size);
 	//TODO put all functions commonly used from myDispWindow and its inheritors in here to support different rendering engines
 
 
