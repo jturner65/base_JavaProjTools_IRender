@@ -114,6 +114,7 @@ public interface IRenderInterface {
 	 */
 	default int[] getClr(int colorVal, int alpha){
 		switch (colorVal){
+			case gui_rnd 					 : { return getRndClr( alpha);}
 			case gui_Black			         : { return new int[] {0,0,0,alpha};}
 			case gui_Gray   		         : { return new int[] {120,120,120,alpha}; }
 			case gui_White  		         : { return new int[] {255,255,255,alpha}; }
@@ -185,6 +186,32 @@ public interface IRenderInterface {
 	 * @return
 	 */		
 	public int[] getRndClrBright(int alpha);
+	
+	/**
+	 * return a randomly chosen color index as defined in IRenderInterface
+	 * @return
+	 */
+	public int getRndClrInt();
+	
+	/**
+	 * return an interpolation between two colors specified by IRenderInterface color index
+	 * @param a Initial color's index
+	 * @param b Final color's index
+	 * @param t time value, between 0.0 and 1.0
+	 * @return Integer array of color values between a and b
+	 */
+	default Integer[] getClrMorph(int a, int b, double t){return getClrMorph(getClr(a,255), getClr(b,255), t);} 
+	
+	/**
+	 * return an interpolation between two colors
+	 * @param a Initial color, as integer array
+	 * @param b Final color, as integer array
+	 * @param t time value, between 0.0 and 1.0
+	 * @return Integer array of color values between a and b
+	 */
+	public Integer[] getClrMorph(int[] a, int[] b, double t);
+  
+	
 	/**
 	 * return x screen value for 3d point
 	 * @param x
