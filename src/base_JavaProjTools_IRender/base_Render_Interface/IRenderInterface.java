@@ -107,7 +107,7 @@ public interface IRenderInterface {
 	 */
 	public int getHeight();
 	/**
-	 * returns integer color value corresponding to defined color
+	 * returns integer color value array corresponding to defined color
 	 * @param colorVal int constant representing desired color
 	 * @param alpha desired alpha color
 	 * @return integer array of colors, with specified alpha
@@ -159,13 +159,14 @@ public interface IRenderInterface {
 			default         		         : { return getClr_Custom(colorVal,alpha);}    
 		}//switch
 	}//getClr
+
 	/**
-	 * any instancing-class-specific colors - colorVal set to be higher than IRenderInterface.gui_OffWhite
-	 * @param colorVal
+	 * any instancing-class-specific, pre-defined colors - colorIndexVal set to be higher than IRenderInterface.gui_OffWhite
+	 * @param colorIndexVal
 	 * @param alpha
 	 * @return
 	 */
-	public int[] getClr_Custom(int colorVal, int alpha);
+	public int[] getClr_Custom(int colorIndexVal, int alpha);
 	/**
 	 * return a random int color array, forcing alpha 255
 	 * @return
@@ -191,23 +192,62 @@ public interface IRenderInterface {
 	 * return a randomly chosen color index as defined in IRenderInterface
 	 * @return
 	 */
-	public int getRndClrInt();
+	public int getRndClrIndex();
 	
 	/**
-	 * return an interpolation between two colors specified by IRenderInterface color index
-	 * @param a Initial color's index
-	 * @param b Final color's index
-	 * @param t time value, between 0.0 and 1.0
-	 * @return Integer array of color values between a and b
+	 * Returns ARGB hex value of passed color values. Assumes r,g,b are all 0-255 range (forces alpha to 255)
+	 * Mod 256 is performed on all values, so all rgb values should be [0,255]
 	 */
-	default Integer[] getClrMorph(int a, int b, double t){return getClrMorph(getClr(a,255), getClr(b,255), t);} 
+	default int getClrAsHex(int r, int g, int b) {
+		return 0xff000000 + (r & 0xFF)<<16 + (g & 0xFF) << 8 + (b & 0xFF);
+	}
 	
+	/**
+	 * Returns ARGB hex value of passed color values. Assumes r,g,b,alpha are all 0-255 range
+	 * Mod 256 is performed on all values, so all rgb values should be [0,255]
+	 */
+	default int getClrAsHex(int r, int g, int b, int alpha) {
+		return alpha<<24 + (r & 0xFF)<<16 + (g & 0xFF) << 8 + (b & 0xFF);
+	}
+	/**
+	 * Returns ARGB hex value of passed color expressed as point.  Assumes point representation is integer RGB range 0-255
+	 */
+	default int getClrAsHex(myPoint p) {return getClrAsHex((int)p.x,(int)p.y,(int)p.z);}
+	/**
+	 * Returns ARGB hex value of passed color expressed as point.  Assumes point representation is integer RGB range 0-255
+	 */
+	default int getClrAsHex(myPointf p) {return getClrAsHex((int)p.x,(int)p.y,(int)p.z);}
+	/**
+	 * Returns ARGB hex value of passed color expressed as point.  Assumes point representation is integer RGB range 0-255
+	 */
+	default int getClrAsHex(myPoint p, int alpha){return getClrAsHex((int)p.x,(int)p.y,(int)p.z, alpha);}
+	/**
+	 * Returns ARGB hex value of passed color expressed as point.  Assumes point representation is integer RGB range 0-255
+	 */
+	default int getClrAsHex(myPointf p, int alpha){return getClrAsHex((int)p.x,(int)p.y,(int)p.z, alpha);}
+	
+	/**
+	 * Returns alpha value [0-255] from passed hex color
+	 */
+	default int getAlpha(int argb) {return argb >>24;}
+	/**
+	 * Returns red value [0-255] from passed hex color
+	 */
+	default int getRed(int argb) {return (argb >>16) & 0xFF;}
+	/**
+	 * Returns green value [0-255] from passed hex color
+	 */
+	default int getGreen(int argb) {return (argb >>8) & 0xFF;}
+	/**
+	 * Returns blue value [0-255] from passed hex color
+	 */
+	default int getBlue(int argb) {return argb & 0xFF;}
 	/**
 	 * return an interpolation between two colors
-	 * @param a Initial color, as integer array
-	 * @param b Final color, as integer array
+	 * @param a Initial color, as integer array [0,255]
+	 * @param b Final color, as integer array [0,255]
 	 * @param t time value, between 0.0 and 1.0
-	 * @return Integer array of color values between a and b
+	 * @return Integer array of color values [0,255] between a and b
 	 */
 	public Integer[] getClrMorph(int[] a, int[] b, double t);
   
@@ -480,10 +520,31 @@ public interface IRenderInterface {
 	
 	/**
 	 * set fill color by value
-	 * @param clr 1st 3 values denot integer color vals
+	 * @param clr 1st 3 values denote integer color vals
 	 * @param alpha 
 	 */
 	public void setFill(int r, int g, int b, int alpha);
+	
+	/**
+	 * Turn off fill
+	 */
+	public void setNoFill();
+	
+	/**
+	 * Set fill color by passed hex argb color, assumes alpha >0, otherwise forces to be 255
+	 * @param rgb 
+	 */
+	default void setFill(int argb) {
+		int b = argb & 0xFF;
+		int tmpRgb = argb>>8;
+		int g = tmpRgb & 0xFF;
+		tmpRgb >>= 8;
+		int r = tmpRgb & 0xFF;
+		tmpRgb >>= 8;
+		int alpha = tmpRgb > 0 ? tmpRgb : 255;  
+		setFill(r,g,b,alpha);
+	}
+	
 	default void setFill(int[] clr, int alpha) {setFill(clr[0],clr[1],clr[2],alpha);}
 	/**
 	 * set fill color based on passed constant color index
@@ -498,6 +559,26 @@ public interface IRenderInterface {
 	 * @param alpha 
 	 */
 	public void setStroke(int r, int g, int b, int alpha);
+	
+	/**
+	 * Turn off stroke
+	 */
+	public void setNoStroke();
+	
+	/**
+	 * Set stroke color by passed hex argb color, assumes alpha >0, otherwise forces to be 255
+	 * @param rgb 
+	 */
+	default void setStroke(int argb) {
+		int b = argb & 0xFF;
+		int tmpRgb = argb>>8;
+		int g = tmpRgb & 0xFF;
+		tmpRgb >>= 8;
+		int r = tmpRgb & 0xFF;
+		tmpRgb >>= 8;
+		int alpha = tmpRgb > 0 ? tmpRgb : 255;  
+		setStroke(r,g,b,alpha);
+	}
 	default void setStroke(int[] clr, int alpha) {setStroke(clr[0],clr[1],clr[2],alpha);}
 	
 	/**
