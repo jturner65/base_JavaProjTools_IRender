@@ -1,9 +1,13 @@
 package base_JavaProjTools_IRender.base_Render_Interface;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import base_Math_Objects.vectorObjs.doubles.myPoint;
 import base_Math_Objects.vectorObjs.doubles.myVector;
 import base_Math_Objects.vectorObjs.floats.myPointf;
 import base_Math_Objects.vectorObjs.floats.myVectorf;
+import com.jogamp.opengl.GL;
 
 /**
  * These are the functions that are expected to be found in a rendering class for proper rendering 
@@ -14,6 +18,63 @@ import base_Math_Objects.vectorObjs.floats.myVectorf;
  *
  */
 public interface IRenderInterface {
+	
+	/**
+	 * Mesh building styles used with gl_beginMesh to describe the kind of mesh primitive 
+	 * being built, based on OpenGL Primitives.
+	 * Possible values :
+	 * POINTS : multiple points with no edges (GL_POINTS)
+	 * LINES : every pair of points describes a distinct line/edge (GL_LINES)
+	 * LINE_LOOP : builds a multi-sided polygon from list of points, with an edge between last and first vert (GL_LINE_LOOP)
+	 * LINE_STRIP : adjacent pairs of verts are connected as lines (GL_LINE_STRIP)
+	 * TRIANGLES : every triple of points describes a distinct triangle (GL_TRIANGLES)
+	 * TRIANGLE_FAN : first vert + subsequent pairs form individual triangles (GL_TRIANGLE_FAN)
+	 * TRIANGLE_STRIP : draw triangle strip (i.e. GL_TRIANGLE_STRIP) 
+	 * 
+	 * @author John
+	 *
+	 */
+	public enum GL_PrimStyle {
+		/**
+		 * POINTS : multiple points with no edges (GL_POINTS)
+		 */
+		GL_POINTS(GL.GL_POINTS), 
+		/**
+		 * LINES : every pair of points describes a distinct line/edge (GL_LINES)
+		 */		
+		GL_LINES(GL.GL_LINES),
+		/**
+		 * LINE_LOOP : builds a multi-sided polygon from list of points, with an edge between last and first vert (GL_LINE_LOOP)
+		 */		
+		GL_LINE_LOOP(GL.GL_LINE_LOOP),
+		/**
+		 * LINE_STRIP : adjacent pairs of verts are connected as lines (GL_LINE_STRIP)
+		 */
+		GL_LINE_STRIP(GL.GL_LINE_STRIP), 
+		/**
+		 * TRIANGLES : every triple of points describes a distinct triangle (GL_TRIANGLES)
+		 */
+		GL_TRIANGLES(GL.GL_TRIANGLES), 
+		/**
+		 * TRIANGLE_STRIP : draw triangle strip (i.e. GL_TRIANGLE_STRIP) 
+		 */
+		GL_TRIANGLE_STRIP(GL.GL_TRIANGLE_STRIP),	
+		/**
+		 * TRIANGLE_FAN : first vert + subsequent pairs form individual triangles (GL_TRIANGLE_FAN)
+		 */
+		GL_TRIANGLE_FAN(GL.GL_TRIANGLE_FAN); 
+		
+		private int value; 
+		private static Map<Integer, GL_PrimStyle> map = new HashMap<Integer, GL_PrimStyle>(); 
+		static { for (GL_PrimStyle enumV : GL_PrimStyle.values()) { map.put(enumV.value, enumV);}}
+		private GL_PrimStyle(int _val){value = _val;} 
+		public int getVal(){return value;} 	
+		public static GL_PrimStyle getVal(int idx){return map.get(idx);}
+		public static int getNumVals(){return map.size();}						//get # of values in enum			
+
+	};
+	
+	
 	//added to support old color constant defs from old projects - should be an enum
 	public int gui_rnd = -1;
 	public int gui_Black 	= 0;
@@ -656,14 +717,14 @@ public interface IRenderInterface {
 	 * begin an open gl shape
 	 * @param type
 	 */
-	public void gl_beginShape(int type);
-	default void gl_beginShape() {gl_beginShape(-1);}
+	public void gl_beginShape(GL_PrimStyle primType);
+	default void gl_beginShape() {gl_beginShape(GL_PrimStyle.GL_LINE_LOOP);}
 	/**
 	 * end an open gl shape
-	 * @param type
+	 * @param isClosed Whether shape is closed or not
 	 */	
-	public void gl_endShape(int type);
-	default void gl_endShape() {gl_endShape(-1);}
+	public void gl_endShape(boolean isClosed);
+	default void gl_endShape() {gl_endShape(false);}
 	
 	///////////////////////
 	// point cloud
