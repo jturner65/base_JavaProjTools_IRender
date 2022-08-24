@@ -254,6 +254,25 @@ public interface IRenderInterface {
 	public int[] getRndClrBright(int alpha);
 	
 	/**
+	 * Takes argb color in hex, and converts to array of [0-255] ints for r,g,b,alpha
+	 * @param argb hex color of format 0xAARRGGBB
+	 * @return array of [0-255] ints with 3 colors r,g,b if no alpha given, or 
+	 * 4 colors r,g,b,alpha if alpha present and non-zero
+	 */
+	default int[] getClrFromHex(int argb) {
+		int b = argb & 0xFF;
+		int tmpRgb = argb>>8;
+		int g = tmpRgb & 0xFF;
+		tmpRgb >>= 8;
+		int r = tmpRgb & 0xFF;
+		tmpRgb >>= 8;
+		if (tmpRgb > 0) {
+			return new int[] {r,g,b,tmpRgb};
+		}
+		// No alpha given, so 3 element array r,g,b
+		return new int[] {r,g,b};
+	}
+	/**
 	 * return a randomly chosen color index as defined in IRenderInterface
 	 * @return
 	 */
@@ -272,8 +291,20 @@ public interface IRenderInterface {
 	 * Mod 256 is performed on all values, so all rgb values should be [0,255]
 	 */
 	default int getClrAsHex(int r, int g, int b, int alpha) {
-		return alpha<<24 + (r & 0xFF)<<16 + (g & 0xFF) << 8 + (b & 0xFF);
+		int res = 0;
+		if (alpha >= 0){res = ((alpha & 0xFF)<<24);}//A
+		return res + ((r & 0xFF)<<16) + ((g & 0xFF) << 8) + (b & 0xFF);
 	}
+	/**
+	 * Returns ARGB hex value of passed RGB color value array. Assumes array values all 0-255 range
+	 */
+	default int getClrAsHex(int[] clrs) {return getClrAsHex(clrs[0],clrs[1],clrs[2]);}
+	
+	/**
+	 * Returns ARGB hex value of passed RGB color value array with alpha. Assumes array values and alpha all 0-255 range
+	 */
+	default int getClrAsHex(int[] clrs, int alpha) {return getClrAsHex(clrs[0],clrs[1],clrs[2], alpha);}
+
 	/**
 	 * Returns ARGB hex value of passed color expressed as point.  Assumes point representation is integer RGB range 0-255
 	 */
