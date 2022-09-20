@@ -735,7 +735,7 @@ public interface IRenderInterface {
 	
 	/**
 	 * set fill color by value during shape building
-	 * @param clr 1st 3 values denot integer color vals
+	 * @param clr 1st 3 values denote integer color vals
 	 * @param alpha 
 	 */
 	public void gl_SetFill(int r, int g, int b, int alpha);
