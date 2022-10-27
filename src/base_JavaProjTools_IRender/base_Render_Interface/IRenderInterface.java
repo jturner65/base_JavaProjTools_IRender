@@ -9,6 +9,8 @@ import base_Math_Objects.vectorObjs.floats.myPointf;
 import base_Math_Objects.vectorObjs.floats.myVectorf;
 import com.jogamp.opengl.GL;
 
+import com.jogamp.newt.opengl.GLWindow;
+
 /**
  * These are the functions that are expected to be found in a rendering class for proper rendering 
  * This interface is very much a work in progress - ultimately, everything that can be expected from
@@ -155,6 +157,11 @@ public interface IRenderInterface {
 	
 	///////////////////
 	// query functions
+	/**
+	 * Return the underlying GL Window for this JOGL 
+	 * @return
+	 */
+	public GLWindow getGLWindow();
 	/**
 	 * return target frame rate
 	 * @return
