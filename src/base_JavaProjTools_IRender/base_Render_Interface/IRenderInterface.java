@@ -1243,7 +1243,7 @@ public interface IRenderInterface {
 	 * @param size
 	 */
 	public void textSize(float size);
-	//TODO put all functions commonly used from myDispWindow and its inheritors in here to support different rendering engines
+	//TODO put all functions commonly used from Base_DispWindow and its inheritors in here to support different rendering engines
 
 
 }//IRenderInterface
