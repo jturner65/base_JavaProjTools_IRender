@@ -745,16 +745,16 @@ public interface IRenderInterface {
 	 * @param clr 1st 3 values denote integer color vals
 	 * @param alpha 
 	 */
-	public void gl_SetFill(int r, int g, int b, int alpha);
-	default void gl_SetFill(int[] clr, int alpha) {gl_SetFill(clr[0],clr[1],clr[2],alpha);}
+	public void gl_setFill(int r, int g, int b, int alpha);
+	default void gl_setFill(int[] clr, int alpha) {gl_setFill(clr[0],clr[1],clr[2],alpha);}
 
 	/**
 	 * set stroke color by value during shape building
 	 * @param clr rgba
 	 * @param alpha 
 	 */
-	public void gl_SetStroke(int r, int g, int b, int alpha);
-	default void gl_SetStroke(int[] clr, int alpha) {gl_SetStroke(clr[0],clr[1],clr[2],alpha);}
+	public void gl_setStroke(int r, int g, int b, int alpha);
+	default void gl_setStroke(int[] clr, int alpha) {gl_setStroke(clr[0],clr[1],clr[2],alpha);}
 	/**
 	 * begin an open gl shape
 	 * @param type
@@ -948,7 +948,7 @@ public interface IRenderInterface {
 	 * @param p
 	 * @param r
 	 */
-	default void drawEllipse2D(myPoint p, float r){drawEllipse2D((float)p.x, (float)p.y, r, r);}	
+	default void drawEllipse2D(myPoint p, double r){drawEllipse2D((float)p.x, (float)p.y, (float)r, (float)r);}	
 	/**
 	 * draw a 2 d ellipse at point p (x,y) with radius r
 	 * @param p
@@ -964,7 +964,7 @@ public interface IRenderInterface {
 	 * @param J y axis
 	 * @param n # of points to use
 	 */
-	public void drawCircle3D(myPoint P, float r, myVector I, myVector J, int n);
+	public void drawCircle3D(myPoint P, double r, myVector I, myVector J, int n);
 	
 	/**
 	 * draw a circle in 3d centered at P with specified radius r in plane proscribed by passed axes using n number of points
@@ -1016,7 +1016,7 @@ public interface IRenderInterface {
 	 * @param c1
 	 * @param c2
 	 */
-	public void drawCylinder_NoFill(myPoint A, myPoint B, float r, int c1, int c2);
+	public void drawCylinder_NoFill(myPoint A, myPoint B, double r, int c1, int c2);
 	/**
 	 * draw a cylinder frame centered at 2 points, with end cap colors
 	 * @param A
@@ -1035,7 +1035,7 @@ public interface IRenderInterface {
 	 * @param c1
 	 * @param c2
 	 */	
-	public void drawCylinder(myPoint A, myPoint B, float r, int c1, int c2);
+	public void drawCylinder(myPoint A, myPoint B, double r, int c1, int c2);
 	/**
 	 * draw a cylinder centered at 2 points, with end cap colors
 	 * @param A
