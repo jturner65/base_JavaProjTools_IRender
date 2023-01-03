@@ -1,4 +1,4 @@
-package base_JavaProjTools_IRender.base_Render_Interface;
+package base_Render_Interface;
 
 import java.util.HashMap;
 import java.util.Map;
