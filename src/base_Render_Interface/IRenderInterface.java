@@ -30,8 +30,8 @@ public interface IRenderInterface {
 	 * LINE_LOOP : builds a multi-sided polygon from list of points, with an edge between last and first vert (GL_LINE_LOOP)
 	 * LINE_STRIP : adjacent pairs of verts are connected as lines (GL_LINE_STRIP)
 	 * TRIANGLES : every triple of points describes a distinct triangle (GL_TRIANGLES)
-	 * TRIANGLE_FAN : first vert + subsequent pairs form individual triangles (GL_TRIANGLE_FAN)
 	 * TRIANGLE_STRIP : draw triangle strip (i.e. GL_TRIANGLE_STRIP) 
+	 * TRIANGLE_FAN : first vert + subsequent pairs form individual triangles (GL_TRIANGLE_FAN)
 	 * 
 	 * @author John
 	 *
@@ -64,16 +64,36 @@ public interface IRenderInterface {
 		/**
 		 * TRIANGLE_FAN : first vert + subsequent pairs form individual triangles (GL_TRIANGLE_FAN)
 		 */
-		GL_TRIANGLE_FAN(GL.GL_TRIANGLE_FAN); 
-		
+		GL_TRIANGLE_FAN(GL.GL_TRIANGLE_FAN); 		
 		private int value; 
+		private final String[] _typeExplanation = new String[] {
+			"Multiple points with no edges",
+			"Every pair of points describes a distinct line/edge",
+			"Builds a multi-sided polygon from list of points, with an edge between last and first vert",
+			"Adjacent pairs of verts are connected as lines",
+			"Every triple of points describes a distinct triangle",
+			"Strip of Triangles",
+			"First vert + subsequent pairs form individual triangles"
+		};
+		private static final String[] _typeName = new String[]{
+			"GL_POINTS",
+			"GL_LINES",
+			"GL_LINE_LOOP",
+			"GL_LINE_STRIP",
+			"GL_TRIANGLES",
+			"GL_TRIANGLE_STRIP",
+			"GL_TRIANGLE_FAN"						
+		};		
 		private static Map<Integer, GL_PrimStyle> map = new HashMap<Integer, GL_PrimStyle>(); 
 		static { for (GL_PrimStyle enumV : GL_PrimStyle.values()) { map.put(enumV.value, enumV);}}
 		private GL_PrimStyle(int _val){value = _val;} 
+		public String getName() {return _typeName[value];}
 		public int getVal(){return value;} 	
 		public static GL_PrimStyle getVal(int idx){return map.get(idx);}
 		public static int getNumVals(){return map.size();}						//get # of values in enum			
-
+		@Override
+	    public String toString() { return ""+this.name()+":"+_typeExplanation[value]; }	
+	    public String toStrBrf() { return ""+_typeExplanation[value]; }	
 	};
 	
 	
