@@ -293,6 +293,7 @@ public interface IRenderInterface {
 		tmpRgb >>= 8;
 		int r = tmpRgb & 0xFF;
 		tmpRgb >>= 8;
+		tmpRgb &= 0xFF;
 		if (tmpRgb > 0) {
 			return new int[] {r,g,b,tmpRgb};
 		}
@@ -310,7 +311,7 @@ public interface IRenderInterface {
 	 * Mod 256 is performed on all values, so all rgb values should be [0,255]
 	 */
 	default int getClrAsHex(int r, int g, int b) {
-		return 0xff000000 + (r & 0xFF)<<16 + (g & 0xFF) << 8 + (b & 0xFF);
+		return 0xFF000000 + (r & 0xFF)<<16 + (g & 0xFF) << 8 + (b & 0xFF);
 	}
 	
 	/**
@@ -319,7 +320,7 @@ public interface IRenderInterface {
 	 */
 	default int getClrAsHex(int r, int g, int b, int alpha) {
 		int res = 0;
-		if (alpha >= 0){res = ((alpha & 0xFF)<<24);}//A
+		if (alpha > 0){res = ((alpha & 0xFF)<<24);}//A
 		return res + ((r & 0xFF)<<16) + ((g & 0xFF) << 8) + (b & 0xFF);
 	}
 	/**
@@ -352,15 +353,15 @@ public interface IRenderInterface {
 	/**
 	 * Returns alpha value [0-255] from passed hex color
 	 */
-	default int getAlpha(int argb) {return argb >>24;}
+	default int getAlpha(int argb) {return (argb>>24)& 0xFF;}
 	/**
 	 * Returns red value [0-255] from passed hex color
 	 */
-	default int getRed(int argb) {return (argb >>16) & 0xFF;}
+	default int getRed(int argb) {return (argb>>16) & 0xFF;}
 	/**
 	 * Returns green value [0-255] from passed hex color
 	 */
-	default int getGreen(int argb) {return (argb >>8) & 0xFF;}
+	default int getGreen(int argb) {return (argb>>8) & 0xFF;}
 	/**
 	 * Returns blue value [0-255] from passed hex color
 	 */
