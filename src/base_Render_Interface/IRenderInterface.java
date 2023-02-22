@@ -620,27 +620,36 @@ public interface IRenderInterface {
 	 * Sets window title
 	 */
 	public void setWindowTitle(String applicationTitle, String windowName);
-		
+
 	/**
-	 * Set the background painted color
+	 * Set the background painted color for specified window idx
+	 * @param winIdx window idx to set color for
 	 * @param r
 	 * @param g
 	 * @param b
 	 * @param alpha
 	 */
-	public void setRenderBackground(int r, int g, int b, int alpha);
-	default void setRenderBackground(int[] clr, int alpha) {setRenderBackground(clr[0],clr[1],clr[2],alpha);}
+	public void setRenderBackground(int winIdx, int r, int g, int b, int alpha);
+	default void setRenderBackground(int winIdx, int[] clr, int alpha) {setRenderBackground(winIdx, clr[0],clr[1],clr[2],alpha);}
+	
+	/**
+	 * Draw the specified window's background color
+	 * @param winIdx
+	 */
+	public void drawRenderBackground(int winIdx);
 	
 	/**
 	 * Load a background "skybox" sphere using texture from filename
 	 * @param filename Texture to use for background skybox sphere
+	 * @param idx window index using specified skybox sphere
 	 */
-	public void loadBkgndSphere(String filename);
+	public void loadBkgndSphere(int winIdx, String filename);
 	
 	/**
-	 * Set loaded background sphere as skybox
+	 * Set loaded background sphere as skybox for passed window idx
+	 * @param winIdx index of window to set 
 	 */
-	public void setBkgndSphere();
+	public void drawBkgndSphere(int winIdx);
 	
 	/**
 	 * set fill color by value
