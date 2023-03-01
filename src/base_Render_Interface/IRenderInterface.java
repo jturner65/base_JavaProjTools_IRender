@@ -937,9 +937,11 @@ public interface IRenderInterface {
 	/**
 	 * draw a translucent representation of a canvas plane ortho to eye-to-mouse vector
 	 * @param eyeToMse vector 
-	 * @param canvas3D
+	 * @param canvas3D bounded points to draw polygon edge of canvas
+	 * @param color color to paint the canvas - should be translucent, 
+	 * 				light for dark backgrounds and dark for light backgrounds
 	 */
-	public void drawCanvas(myVector eyeToMse, myPointf[] canvas3D);
+	public void drawCanvas(myVector eyeToMse, myPointf[] canvas3D, int[] color);
 	
 	/**
 	 * draw a sphere of specified radius
