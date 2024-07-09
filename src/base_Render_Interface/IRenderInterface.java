@@ -175,6 +175,13 @@ public interface IRenderInterface {
 	 */
 	public void setSmoothing(int smthLvl);
 	
+	/**
+	 * set initial location of window
+	 * @param x the x location
+	 * @param y the y location
+	 */
+	public void setLocation(int x, int y);
+	
 	///////////////////
 	// query functions
 	/**
