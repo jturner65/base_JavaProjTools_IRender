@@ -154,12 +154,6 @@ public interface IRenderInterface {
 	 */
 	public int[] rgbClrs = new int[]{gui_Red,gui_Green,gui_Blue};
 	
-	/**
-	 * size of printed text (default is 12)
-	 */
-	public int txtSz = 11;
-
-	
 	///////////////////////
 	// required methods
 	
@@ -381,8 +375,7 @@ public interface IRenderInterface {
 	 * @return Integer array of color values [0,255] between a and b
 	 */
 	public Integer[] getClrMorph(int[] a, int[] b, double t);
-  
-	
+  	
 	/**
 	 * return x screen value for 3d point
 	 * @param x
@@ -469,10 +462,8 @@ public interface IRenderInterface {
 	 */
 	public myVectorf getMouseDrag_f();		
 	
-	
 	/////////////////////
-	// transformation stack and transformations
-	
+	// transformation stack and transformations	
 	/**
 	 * push gl transformation matrix onto trans stack, and possibly current style information if supported
 	 * @return push depth
@@ -606,18 +597,27 @@ public interface IRenderInterface {
 	
 	///////////////////////
 	// display directives
+	
+	/**
+	 * Loop to execute program code and render buffers.
+	 */
+	public void draw();
+	
 	/**
 	 * opengl hint directive to not check for depth - use this to display text on screen
 	 */
 	public void setBeginNoDepthTest();
+	
 	/**
 	 * opengl hint directive to start checking depth again
 	 */
-	public void setEndNoDepthTest();	
+	public void setEndNoDepthTest();
+	
 	/**
 	 * disable lights in scene
 	 */
 	public void disableLights();
+	
 	/**
 	 * enable lights in scene
 	 */
@@ -877,9 +877,7 @@ public interface IRenderInterface {
 	 * @param stClr
 	 * @param endClr
 	 */
-	public void drawLine(myPointf a, myPointf b, int[] stClr, int[] endClr);
-	
-	
+	public void drawLine(myPointf a, myPointf b, int[] stClr, int[] endClr);	
 	
 	////////////////////////
 	// splines
@@ -939,7 +937,6 @@ public interface IRenderInterface {
 
 	/////////////////////////////////////////
 	// objects
-
 	
 	/**
 	 * draw a translucent representation of a canvas plane ortho to eye-to-mouse vector
@@ -1282,7 +1279,5 @@ public interface IRenderInterface {
 	 * @param size
 	 */
 	public void textSize(float size);
-	//TODO put all functions commonly used from Base_DispWindow and its inheritors in here to support different rendering engines
-
-
+	
 }//IRenderInterface
