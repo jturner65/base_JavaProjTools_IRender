@@ -1239,13 +1239,22 @@ public interface IRenderInterface {
 	 * @param z
 	 */
 	public void showText(String txt, float x, float y, float z );
+	
+	/**
+	 * display an array of text at a location on screen. Color needs to have been specified before calling.
+	 * @param d initial y location
+ 	 * @param txtAra string array to display
+	 */	
+	public void showTextAra(float d, String[] txtAra);
+	
 	/**
 	 * display an array of text at a location on screen
 	 * @param d initial y location
 	 * @param tclr text color
  	 * @param txtAra string array to display
 	 */
-	public void showOffsetTextAra(float d, int tclr, String[] txtAra);
+	public void showTextAra(float d, int tclr, String[] txtAra);
+	
 	/**
 	 * show array displayed at specific point on screens
 	 * @param P
