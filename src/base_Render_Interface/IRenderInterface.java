@@ -1263,7 +1263,7 @@ public interface IRenderInterface {
 	 * @param clrs
 	 * @param txtAra
 	 */
-	public void showTxtAra(myPointf P, float rad, int det, int[] clrs, String[] txtAra);
+	public void showTextAra(myPointf P, float rad, int det, int[] clrs, String[] txtAra);
 	
 	/**
 	 * draw a box at a point containing an array of text
@@ -1274,7 +1274,7 @@ public interface IRenderInterface {
 	 * @param txtAra
 	 * @param rectDims
 	 */
-	public void showBoxTxtAra(myPointf P, float rad, int det, int[] clrs, String[] txtAra, float[] rectDims);	
+	public void showBoxTextAra(myPointf P, float rad, int det, int[] clrs, String[] txtAra, float[] rectDims);	
 
 	/**
 	 * return the size, in pixels, of the passed text string, accounting for the currently set font dimensions
