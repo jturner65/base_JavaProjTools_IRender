@@ -84,16 +84,18 @@ public interface IRenderInterface {
 			"GL_TRIANGLE_STRIP",
 			"GL_TRIANGLE_FAN"						
 		};		
+		private static Map<Integer, GL_PrimStyle> valmap = new HashMap<Integer, GL_PrimStyle>(); 
 		private static Map<Integer, GL_PrimStyle> map = new HashMap<Integer, GL_PrimStyle>(); 
-		static { for (GL_PrimStyle enumV : GL_PrimStyle.values()) { map.put(enumV.value, enumV);}}
+		static { for (GL_PrimStyle enumV : GL_PrimStyle.values()) { valmap.put(enumV.value, enumV); map.put(enumV.ordinal(), enumV);}}
 		private GL_PrimStyle(int _val){value = _val;} 
 		public String getName() {return _typeName[value];}
 		public int getVal(){return value;} 	
-		public static GL_PrimStyle getVal(int idx){return map.get(idx);}
+		public static GL_PrimStyle getEnumByIndex(int idx){return map.get(idx);}
+		public static GL_PrimStyle getEnumFromValue(int idx){return valmap.get(idx);}
 		public static int getNumVals(){return map.size();}						//get # of values in enum			
 		@Override
-	    public String toString() { return ""+this.name()+":"+_typeExplanation[value]; }	
-	    public String toStrBrf() { return ""+_typeExplanation[value]; }	
+	    public String toString() { return ""+this.name()+":"+_typeExplanation[ordinal()]; }	
+	    public String toStrBrf() { return ""+_typeExplanation[ordinal()]; }	
 	};
 	
 	
