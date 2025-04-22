@@ -626,9 +626,9 @@ public interface IRenderInterface {
 	public void enableLights();	
 	
 	/**
-	 * Sets window title
+	 * Sets window title. AppMgr constructs window title
 	 */
-	public void setWindowTitle(String applicationTitle, String windowName);
+	public void setWindowTitle(String windowTitle);
 
 	/**
 	 * Set the background painted color for specified window idx
