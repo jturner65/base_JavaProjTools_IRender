@@ -649,10 +649,10 @@ public interface IRenderInterface {
 	
 	/**
 	 * Load a background "skybox" sphere using texture from filename
-	 * @param filename Texture to use for background skybox sphere
 	 * @param idx window index using specified skybox sphere
+	 * @param filename Texture to use for background skybox sphere
 	 */
-	public void loadBkgndSphere(int winIdx, String filename);
+	public void loadBkgndSphere(int idx, String filename);
 	
 	/**
 	 * Set loaded background sphere as skybox for passed window idx
