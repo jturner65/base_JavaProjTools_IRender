@@ -88,7 +88,7 @@ public interface IRenderInterface {
 		private static Map<Integer, GL_PrimStyle> map = new HashMap<Integer, GL_PrimStyle>(); 
 		static { for (GL_PrimStyle enumV : GL_PrimStyle.values()) { valmap.put(enumV.value, enumV); map.put(enumV.ordinal(), enumV);}}
 		private GL_PrimStyle(int _val){value = _val;} 
-		public String getName() {return _typeName[value];}
+		public String getName() {return _typeName[ordinal()];}
 		public int getVal(){return value;} 	
 		public static GL_PrimStyle getEnumByIndex(int idx){return map.get(idx);}
 		public static GL_PrimStyle getEnumFromValue(int idx){return valmap.get(idx);}
@@ -97,20 +97,19 @@ public interface IRenderInterface {
 	    public String toString() { return ""+this.name()+":"+_typeExplanation[ordinal()]; }	
 	    public String toStrBrf() { return ""+_typeExplanation[ordinal()]; }	
 	};
-	
-	
+
 	//added to support old color constant defs from old projects - should be an enum
-	public int gui_rnd = -1;
+	public int gui_rnd 		= -1;
 	public int gui_Black 	= 0;
 	public int gui_White 	= 1;	
 	public int gui_Gray 	= 2;
 	
-	public int gui_Red 	= 3;
+	public int gui_Red 		= 3;
 	public int gui_Blue 	= 4;
 	public int gui_Green 	= 5;
 	public int gui_Yellow 	= 6;
 	public int gui_Cyan 	= 7;
-	public int gui_Magenta = 8;
+	public int gui_Magenta 	= 8;
 	
 	public int gui_LightRed = 9;
 	public int gui_LightBlue = 10;
@@ -147,6 +146,7 @@ public interface IRenderInterface {
 	public int gui_TransCyan = 38;	
 	public int gui_TransWhite = 39;	
 	public int gui_OffWhite = 40;
+	
 	/**
 	 * index of color definition next after static IRenderInterface defs
 	 */
@@ -627,6 +627,7 @@ public interface IRenderInterface {
 	
 	/**
 	 * Sets window title. AppMgr constructs window title
+	 * @param windowTitle string to display in the window titlebar
 	 */
 	public void setWindowTitle(String windowTitle);
 
