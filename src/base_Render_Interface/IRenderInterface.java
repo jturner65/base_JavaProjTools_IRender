@@ -814,22 +814,22 @@ public interface IRenderInterface {
 	 * draw a cloud of points with all points having same color value as an integrated shape
 	 * @param numPts number of points to draw
 	 * @param ptIncr incrementer between points, to draw only every 2nd, 3rd or more'th point
-	 * @param h_part_clr_int array of 3-color stroke values for all points
-	 * @param h_part_pos_x per point x value
-	 * @param h_part_pos_y per point y value
-	 * @param h_part_pos_z per point z value
+	 * @param ptClrIntAra array of 3-color stroke values for all points
+	 * @param ptPosX per point x value
+	 * @param ptPosY per point y value
+	 * @param ptPosZ per point z value
 	 */
-	public void drawPointCloudWithColor(int numPts, int ptIncr, int[] h_part_clr_int, float[] h_part_pos_x, float[] h_part_pos_y, float[] h_part_pos_z);
+	public void drawPointCloudWithColor(int numPts, int ptIncr, int[] ptClrIntAra, float[] ptPosX, float[] ptPosY, float[] ptPosZ);
 	/**
 	 * draw a cloud of points with passed color values as an integrated shape
 	 * @param numPts number of points to draw
 	 * @param ptIncr incrementer between points, to draw only every 2nd, 3rd or more'th point
-	 * @param h_part_clr_int 2d array of per point 3-color stroke values
-	 * @param h_part_pos_x per point x value
-	 * @param h_part_pos_y per point y value
-	 * @param h_part_pos_z per point z value
+	 * @param ptClrIntAra 2d array of per point 3-color stroke values
+	 * @param ptPosX per point x value
+	 * @param ptPosY per point y value
+	 * @param ptPosZ per point z value
 	 */
-	public void drawPointCloudWithColors(int numPts, int ptIncr, int[][] h_part_clr_int, float[] h_part_pos_x, float[] h_part_pos_y, float[] h_part_pos_z);
+	public void drawPointCloudWithColors(int numPts, int ptIncr, int[][] ptClrIntAra, float[] ptPosX, float[] ptPosY, float[] ptPosZ);
 
 	////////////////////////
 	// lines
