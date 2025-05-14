@@ -7,6 +7,7 @@ import base_Math_Objects.vectorObjs.doubles.myPoint;
 import base_Math_Objects.vectorObjs.doubles.myVector;
 import base_Math_Objects.vectorObjs.floats.myPointf;
 import base_Math_Objects.vectorObjs.floats.myVectorf;
+
 import com.jogamp.opengl.GL;
 
 import com.jogamp.newt.opengl.GLWindow;
@@ -466,6 +467,17 @@ public interface IRenderInterface {
 	
 	/////////////////////
 	// transformation stack and transformations	
+	
+	/**
+	 * Retrieve current push matrix/style depth - for debugging purposes.
+	 * @return
+	 */
+	public int getCurrentPushMatDepth();
+	/**
+	 * Retrieve current push style only depth - for debugging purposes.
+	 * @return
+	 */
+	public  int getCurrentPushStyleDepth(); 	
 	/**
 	 * push gl transformation matrix onto trans stack, and possibly current style information if supported
 	 * @return push depth
@@ -934,9 +946,19 @@ public interface IRenderInterface {
 	 */
 	public myVector bezierTangent(myPoint[] C, float t);
 	/**
-	 * set the detail of drawn spheres using passed detail value
-	 * @param det
+	 * Set a vertex's UV texture coordinates
+	 * @param P myPointf for vertex
+	 * @param u float u texture coordinate (0-1)
+	 * @param v float v texture coordinate (0-1)
 	 */
+	public void vTextured(myPointf P, float u, float v);
+	/**
+	 * Set a vertex's UV texture coordinates
+	 * @param P myPoint for vertex
+	 * @param u double u texture coordinate (0-1)
+	 * @param v double v texture coordinate (0-1)
+	 */
+	public void vTextured(myPoint P, double u, double v);                       
 
 	/////////////////////////////////////////
 	// objects
@@ -1075,6 +1097,7 @@ public interface IRenderInterface {
 	 * @param c2
 	 */	
 	public void drawCylinder(myPoint A, myPoint B, double r, int c1, int c2);
+	
 	/**
 	 * draw a cylinder centered at 2 points, with end cap colors
 	 * @param A
@@ -1083,8 +1106,56 @@ public interface IRenderInterface {
 	 * @param c1
 	 * @param c2
 	 */
-	public void drawCylinder(myPointf A, myPointf B, float r, int c1, int c2);		
+	public void drawCylinder(myPointf A, myPointf B, float r, int c1, int c2);
 	
+	/**
+	 * Draw a shape from the passed myPoint ara
+	 * @param ara array of myPoints
+	 */
+	public void drawShapeFromPts(myPoint[] ara);
+	
+	/**
+	 * Draw a shape from passed myPoint array with given normal
+	 * @param ara array of myPoints
+	 * @param norm surface normal for resultant shape
+	 */
+	public void drawShapeFromPts(myPoint[] ara, myVector norm);
+	
+	/**
+	 * Draw a shape from the given myPoint array of points with the given myVector array
+	 * of normals per point.  NOTE : point array size and normal array size is not checked.
+	 * 
+	 * @param ara array of myPoints
+	 * @param normAra array of per-point myVector surface normals for shape.
+	 * SIZE IS NOT VERIFIED - this must be at least as many normals
+	 * as there are points for shape
+	 */
+	public void drawShapeFromPts(myPoint[] ara, myVector[] normAra);
+	
+	/**
+	 * Draw a shape from the passed myPointf ara
+	 * @param ara array of myPointfs
+	 */	
+	public void drawShapeFromPts(myPointf[] ara);
+	
+	/**
+	 * Draw a shape from passed myPointf array with given normal
+	 * @param ara array of myPointfs
+	 * @param norm myVectorf surface normal for resultant shape
+	 */	
+	public void drawShapeFromPts(myPointf[] ara, myVectorf norm);
+	
+	/**
+	 * Draw a shape from the given myPointf array of points with the given myVectorf array
+	 * of normals per point.  NOTE : point array size and normal array size is not checked.
+	 * 
+	 * @param ara array of myPointfs
+	 * @param normAra array of per-point myVectorf surface normals for shape.
+	 * SIZE IS NOT VERIFIED - this must be at least as many normals
+	 * as there are points for shape
+	 */	
+	public void drawShapeFromPts(myPointf[] ara, myVectorf[] normAra);
+		
 	////////////////////
 	// showing double points as spheres or circles
 	
@@ -1284,12 +1355,12 @@ public interface IRenderInterface {
 	 * @param txt the text string to be measured
 	 * @return the size in pixels
 	 */
-	public float textWidth(String txt);
+	public float getTextWidth(String txt);
 	
 	/**
 	 * Set the current text font size
 	 * @param size
 	 */
-	public void textSize(float size);
+	public void setTextSize(float size);
 	
 }//IRenderInterface
