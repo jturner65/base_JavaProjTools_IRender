@@ -3,6 +3,7 @@ package base_Render_Interface;
 import java.util.HashMap;
 import java.util.Map;
 
+import base_Math_Objects.MyMathUtils;
 import base_Math_Objects.vectorObjs.doubles.myPoint;
 import base_Math_Objects.vectorObjs.doubles.myVector;
 import base_Math_Objects.vectorObjs.floats.myPointf;
@@ -219,7 +220,7 @@ public interface IRenderInterface {
 	 */
 	default int[] getClr(int colorVal, int alpha){
 		switch (colorVal){
-			case gui_rnd 					 : { return getRndClr( alpha);}
+			case gui_rnd 					 : { return MyMathUtils.randomIntClrAra(alpha);}
 			case gui_Black			         : { return new int[] {0,0,0,alpha};}
 			case gui_Gray   		         : { return new int[] {120,120,120,alpha}; }
 			case gui_White  		         : { return new int[] {255,255,255,alpha}; }
@@ -260,38 +261,10 @@ public interface IRenderInterface {
 			case gui_TransCyan  	         : { return new int[] {0,110,110,alpha/2};}
 			case gui_TransMagenta  	         : { return new int[] {110,0,110,alpha/2};}	
 			case gui_TransWhite  	         : { return new int[] {220,220,220,alpha/2};}	
-			case gui_OffWhite				 : { return new int[] {255,255,235,alpha};}
-			default         		         : { return getClr_Custom(colorVal,alpha);}    
+			case gui_OffWhite				 : { return new int[] {255,255,235,alpha};}   
 		}//switch
+		return new int[] {120,120,120,alpha};
 	}//getClr
-
-	/**
-	 * any instancing-class-specific, pre-defined colors - colorIndexVal set to be higher than IRenderInterface.gui_OffWhite
-	 * @param colorIndexVal
-	 * @param alpha
-	 * @return
-	 */
-	public int[] getClr_Custom(int colorIndexVal, int alpha);
-	/**
-	 * return a random int color array, forcing alpha 255
-	 * @return
-	 */	
-	default int[] getRndClr(){return getRndClr(255);	}	
-	/**
-	 * return a random int color array, passing alpha
-	 * @return
-	 */	
-	public int[] getRndClr(int alpha);
-	/**
-	 * return a brighter random int color array, forcing alpha 255
-	 * @return
-	 */		
-	default int[] getRndClrBright(){return getRndClrBright(255);}
-	/**
-	 * return a brighter random int color array, passing alpha
-	 * @return
-	 */		
-	public int[] getRndClrBright(int alpha);
 	
 	/**
 	 * Takes argb color in hex, and converts to array of [0-255] ints for r,g,b,alpha
