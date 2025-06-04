@@ -3,15 +3,14 @@ package base_Render_Interface;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.jogamp.newt.opengl.GLWindow;
+import com.jogamp.opengl.GL2;
+
 import base_Math_Objects.MyMathUtils;
 import base_Math_Objects.vectorObjs.doubles.myPoint;
 import base_Math_Objects.vectorObjs.doubles.myVector;
 import base_Math_Objects.vectorObjs.floats.myPointf;
 import base_Math_Objects.vectorObjs.floats.myVectorf;
-
-import com.jogamp.opengl.GL2;
-
-import com.jogamp.newt.opengl.GLWindow;
 
 /**
  * These are the functions that are expected to be found in a rendering class for proper rendering 
