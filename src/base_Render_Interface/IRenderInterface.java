@@ -81,7 +81,7 @@ public interface IRenderInterface {
 		GL_POLYGON(GL2.GL_POLYGON);
 		
 		private int value; 
-		private final String[] _typeExplanation = new String[] {
+		private final String[] _typeExplanation = new String[]{
 			"Multiple points with no edges",
 			"Every pair of points describes a distinct line/edge",
 			"Builds a multi-sided polygon from list of points, with an edge between last and first vert",
@@ -1278,6 +1278,8 @@ public interface IRenderInterface {
 	 */
 	public void showTextAtPt(myPointf P, String s, myVectorf D);
 	
+	////////////////////
+	// showing text	
 	/**
 	 * display text at x,y location
 	 * @param txt
@@ -1287,7 +1289,7 @@ public interface IRenderInterface {
 	public void showText(String txt, float x, float y);
 	
 	/**
-	 * display text at x,y,x location
+	 * display text at x,y,z location
 	 * @param txt
 	 * @param x
 	 * @param y
@@ -1330,7 +1332,43 @@ public interface IRenderInterface {
 	 * @param rectDims
 	 */
 	public void showBoxTextAra(myPointf P, float rad, int det, int[] clrs, String[] txtAra, float[] rectDims);	
-
+	
+	////////////////////
+	// showing centered text	
+	/**
+	 * display text centered at x,y location
+	 * @param txt
+	 * @param ctrX x location of center
+	 * @param y
+	 */
+	public void showCenteredText(String txt, float ctrX, float y);
+	
+	/**
+	 * display text centered at x,y,z location
+	 * @param txt
+	 * @param ctrX x location of center
+	 * @param y
+	 * @param z
+	 */
+	public void showCenteredText(String txt, float ctrX, float y, float z );
+	
+	/**
+	 * display an array of text centered at a location on screen. Color needs to have been specified before calling.
+	 * @param ctrX x location of center
+	 * @param initY initial y location
+ 	 * @param txtAra string array to display
+	 */	
+	public void showCenteredTextAra(float ctrX, float initY, String[] txtAra);
+	
+	/**
+	 * display an array of text centered at a location on screen
+	 * @param ctrX x location of center
+	 * @param initY initial y location
+	 * @param tclr text color
+ 	 * @param txtAra string array to display
+	 */
+	public void showCenteredTextAra(float ctrX, float initY, int tclr, String[] txtAra);
+		
 	/**
 	 * return the size, in pixels, of the passed text string, accounting for the currently set font dimensions
 	 * @param txt the text string to be measured
