@@ -292,6 +292,12 @@ public interface IRenderInterface {
 	public int getRndClrIndex();
 	
 	/**
+	 * Return an array holding random 4-int stroke (idx 0) and fill (idx 1) color where the fill is a lighter, scaled version of the stroke
+	 * @return
+	 */
+	public int[][] getRndMatchedStrkFillClrs();
+	
+	/**
 	 * Returns ARGB hex value of passed color values. Assumes r,g,b are all 0-255 range (forces alpha to 255)
 	 * Mod 256 is performed on all values, so all rgb values should be [0,255]
 	 */
@@ -458,7 +464,7 @@ public interface IRenderInterface {
 	 * Retrieve current push style only depth - for debugging purposes.
 	 * @return
 	 */
-	public  int getCurrentPushStyleDepth(); 	
+	public int getCurrentPushStyleDepth(); 	
 	/**
 	 * push gl transformation matrix onto trans stack, and possibly current style information if supported
 	 * @return push depth
