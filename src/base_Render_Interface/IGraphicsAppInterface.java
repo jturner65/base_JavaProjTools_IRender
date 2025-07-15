@@ -1,170 +1,28 @@
 package base_Render_Interface;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import com.jogamp.newt.opengl.GLWindow;
-import com.jogamp.opengl.GL2;
 
-import base_Math_Objects.MyMathUtils;
 import base_Math_Objects.vectorObjs.doubles.myPoint;
 import base_Math_Objects.vectorObjs.doubles.myVector;
 import base_Math_Objects.vectorObjs.floats.myPointf;
 import base_Math_Objects.vectorObjs.floats.myVectorf;
+import base_Render_Interface.base.IRenderInterface;
+import base_Render_Interface.shape.GL_PrimitiveType;
+import base_Render_Interface.shape.IMeshInterface;
+import base_Render_Interface.shape.IPrimShapeInterface;
+import base_Render_Interface.shape.PrimitiveType;
 
 /**
- * These are the functions that are expected to be found in a rendering class for proper rendering 
+ * These are the functions that are expected to be found in a rendering class for proper rendering for 
+ * a graphics-based application. 
  * This interface is very much a work in progress - ultimately, everything that can be expected from
  * whatever rendering mechanism is being used should be referenced here so all consuming code can be
  * implementation agnostic
  * @author john
  *
  */
-public interface IRenderInterface {
-    
-    /**
-     * Mesh building styles used with gl_beginMesh to describe the kind of mesh primitive 
-     * being built, based on OpenGL Primitives.
-     * Possible values :
-     * POINTS : multiple points with no edges (GL_POINTS)
-     * LINES : every pair of points describes a distinct line/edge (GL_LINES)
-     * LINE_LOOP : builds a multi-sided polygon from list of points, with an edge between last and first vert (GL_LINE_LOOP)
-     * LINE_STRIP : adjacent pairs of verts are connected as lines (GL_LINE_STRIP)
-     * TRIANGLES : every triple of points describes a distinct triangle (GL_TRIANGLES)
-     * TRIANGLE_STRIP : draw triangle strip (i.e. GL_TRIANGLE_STRIP) 
-     * TRIANGLE_FAN : first vert + subsequent pairs form individual triangles (GL_TRIANGLE_FAN)
-     * 
-     * @author John
-     *
-     */
-    public enum GL_PrimStyle {
-        /**
-         * POINTS : multiple points with no edges (GL_POINTS)
-         */
-        GL_POINTS(GL2.GL_POINTS), 
-        /**
-         * LINES : every pair of points describes a distinct line/edge (GL_LINES)
-         */        
-        GL_LINES(GL2.GL_LINES),
-        /**
-         * LINE_LOOP : builds a multi-sided polygon from list of points, with an edge between last and first vert (GL_LINE_LOOP)
-         */        
-        GL_LINE_LOOP(GL2.GL_LINE_LOOP),
-        /**
-         * LINE_STRIP : adjacent pairs of verts are connected as lines (GL_LINE_STRIP)
-         */
-        GL_LINE_STRIP(GL2.GL_LINE_STRIP), 
-        /**
-         * TRIANGLES : every triple of points describes a distinct triangle (GL_TRIANGLES)
-         */
-        GL_TRIANGLES(GL2.GL_TRIANGLES), 
-        /**
-         * TRIANGLE_STRIP : draw triangle strip (i.e. GL_TRIANGLE_STRIP) 
-         */
-        GL_TRIANGLE_STRIP(GL2.GL_TRIANGLE_STRIP),    
-        /**
-         * TRIANGLE_FAN : first vert + subsequent pairs form individual triangles (GL_TRIANGLE_FAN)
-         */
-        GL_TRIANGLE_FAN(GL2.GL_TRIANGLE_FAN),
-        /**
-         * QUADS : Treats each group of four vertices as an independent quadrilateral.
-         */
-        GL_QUADS(GL2.GL_QUADS),
-        /**
-         * QUAD STRIP : Defines connected quadrilaterals. One quadrilateral is defined for each pair 
-         * of vertices presented after the first pair.
-         */
-        GL_QUAD_STRIP(GL2.GL_QUAD_STRIP),
-        /**
-         * POLYGON : A single convex polygon
-         */
-        GL_POLYGON(GL2.GL_POLYGON);
-        
-        private int value; 
-        private final String[] _typeExplanation = new String[]{
-            "Multiple points with no edges",
-            "Every pair of points describes a distinct line/edge",
-            "Builds a multi-sided polygon from list of points, with an edge between last and first vert",
-            "Adjacent pairs of verts are connected as lines",
-            "Every triple of points describes a distinct triangle",
-            "Strip of Triangles",
-            "First vert + subsequent pairs form individual triangles",
-            "Every quartet of points describes a distinct quadrilateral",
-            "Strip of Quadrilaterals - every pair of points after the first pair describes a distinct quadrilateral",
-            "A convex polygon"
-        };
-    
-        private static Map<Integer, GL_PrimStyle> valmap = new HashMap<Integer, GL_PrimStyle>(); 
-        private static Map<Integer, GL_PrimStyle> map = new HashMap<Integer, GL_PrimStyle>(); 
-        static { for (GL_PrimStyle enumV : GL_PrimStyle.values()) { valmap.put(enumV.value, enumV); map.put(enumV.ordinal(), enumV);}}
-        private GL_PrimStyle(int _val){value = _val;} 
-        public String getName() {return this.name();}
-        public int getVal(){return value;}     
-        public static GL_PrimStyle getEnumByIndex(int idx){return map.get(idx);}
-        public static GL_PrimStyle getEnumFromValue(int idx){return valmap.get(idx);}
-        public static int getNumVals(){return map.size();}                        //get # of values in enum            
-        @Override
-        public String toString() { return ""+this.name()+":"+_typeExplanation[ordinal()]; }    
-        public String toStrBrf() { return ""+_typeExplanation[ordinal()]; }    
-    }
+public interface IGraphicsAppInterface extends IRenderInterface {
 
-    //added to support old color constant defs from old projects - should be an enum
-    public int gui_rnd         = -1;
-    public int gui_Black     = 0;
-    public int gui_White     = 1;    
-    public int gui_Gray     = 2;
-    
-    public int gui_Red         = 3;
-    public int gui_Blue     = 4;
-    public int gui_Green     = 5;
-    public int gui_Yellow     = 6;
-    public int gui_Cyan     = 7;
-    public int gui_Magenta     = 8;
-    
-    public int gui_LightRed = 9;
-    public int gui_LightBlue = 10;
-    public int gui_LightGreen = 11;
-    public int gui_LightYellow = 12;
-    public int gui_LightCyan = 13;
-    public int gui_LightMagenta = 14;
-    public int gui_LightGray = 15;
-    
-    public int gui_DarkCyan = 16;
-    public int gui_DarkYellow = 17;
-    public int gui_DarkGreen = 18;
-    public int gui_DarkBlue = 19;
-    public int gui_DarkRed = 20;
-    public int gui_DarkGray = 21;
-    public int gui_DarkMagenta = 22;
-    
-    public int gui_FaintGray = 23;
-    public int gui_FaintRed = 24;
-    public int gui_FaintBlue = 25;
-    public int gui_FaintGreen = 26;
-    public int gui_FaintYellow = 27;
-    public int gui_FaintCyan = 28;
-    public int gui_FaintMagenta = 29;
-    
-    public int gui_TransBlack = 30;
-    public int gui_TransGray = 31;
-    public int gui_TransMagenta = 32;    
-    public int gui_TransLtGray = 33;
-    public int gui_TransRed = 34;
-    public int gui_TransBlue = 35;
-    public int gui_TransGreen = 36;
-    public int gui_TransYellow = 37;
-    public int gui_TransCyan = 38;    
-    public int gui_TransWhite = 39;    
-    public int gui_OffWhite = 40;
-    
-    /**
-     * index of color definition next after static IRenderInterface defs
-     */
-    public int gui_nextColorIDX = 41;
-    /**
-     * colors used for axes
-     */
-    public int[] rgbClrs = new int[]{gui_Red,gui_Green,gui_Blue};
     
     ///////////////////////
     // required methods
@@ -211,160 +69,6 @@ public interface IRenderInterface {
      * @return
      */
     public int getHeight();
-    /**
-     * returns integer color value array corresponding to defined color
-     * @param colorVal int constant representing desired color
-     * @param alpha desired alpha color
-     * @return integer array of colors, with specified alpha
-     */
-    default int[] getClr(int colorVal, int alpha){
-        switch (colorVal){
-            case gui_rnd                      : { return MyMathUtils.randomIntClrAra(alpha);}
-            case gui_Black                     : { return new int[] {0,0,0,alpha};}
-            case gui_Gray                    : { return new int[] {120,120,120,alpha}; }
-            case gui_White                   : { return new int[] {255,255,255,alpha}; }
-            case gui_Yellow                  : { return new int[] {255,255,0,alpha}; }
-            case gui_Cyan                    : { return new int[] {0,255,255,alpha};} 
-            case gui_Magenta                 : { return new int[] {255,0,255,alpha};}  
-            case gui_Red                     : { return new int[] {255,0,0,alpha};} 
-            case gui_Blue                     : { return new int[] {0,0,255,alpha};}
-            case gui_Green                     : { return new int[] {0,255,0,alpha};}  
-            case gui_DarkGray                : { return new int[] {80,80,80,alpha};}
-            case gui_DarkRed                 : { return new int[] {120,0,0,alpha};}
-            case gui_DarkBlue                    : { return new int[] {0,0,120,alpha};}
-            case gui_DarkGreen               : { return new int[] {0,120,0,alpha};}
-            case gui_DarkYellow              : { return new int[] {120,120,0,alpha};}
-            case gui_DarkMagenta             : { return new int[] {120,0,120,alpha};}
-            case gui_DarkCyan                : { return new int[] {0,120,120,alpha};}       
-            case gui_LightGray                : { return new int[] {200,200,200,alpha};}
-            case gui_LightRed                 : { return new int[] {255,110,110,alpha};}
-            case gui_LightBlue                : { return new int[] {110,110,255,alpha};}
-            case gui_LightGreen               : { return new int[] {110,255,110,alpha};}
-            case gui_LightYellow              : { return new int[] {255,255,110,alpha};}
-            case gui_LightMagenta             : { return new int[] {255,110,255,alpha};}
-            case gui_LightCyan                : { return new int[] {110,255,255,alpha};}
-            case gui_FaintGray                  : { return new int[] {110,110,110,alpha};}
-            case gui_FaintRed                   : { return new int[] {110,0,0,alpha};}
-            case gui_FaintBlue                   : { return new int[] {0,0,110,alpha};}
-            case gui_FaintGreen              : { return new int[] {0,110,0,alpha};}
-            case gui_FaintYellow              : { return new int[] {110,110,0,alpha};}
-            case gui_FaintCyan               : { return new int[] {0,110,110,alpha};}
-            case gui_FaintMagenta               : { return new int[] {110,0,110,alpha};}        
-            case gui_TransBlack               : { return new int[] {0,0,0,alpha/2};}      
-            case gui_TransGray               : { return new int[] {110,110,110,alpha/2};}
-            case gui_TransLtGray               : { return new int[] {180,180,180,alpha/2};}
-            case gui_TransRed                    : { return new int[] {110,0,0,alpha/2};}
-            case gui_TransBlue               : { return new int[] {0,0,110,alpha/2};}
-            case gui_TransGreen               : { return new int[] {0,110,0,alpha/2};}
-            case gui_TransYellow               : { return new int[] {110,110,0,alpha/2};}
-            case gui_TransCyan               : { return new int[] {0,110,110,alpha/2};}
-            case gui_TransMagenta               : { return new int[] {110,0,110,alpha/2};}    
-            case gui_TransWhite               : { return new int[] {220,220,220,alpha/2};}    
-            case gui_OffWhite                 : { return new int[] {255,255,235,alpha};}   
-        }//switch
-        return new int[] {120,120,120,alpha};
-    }//getClr
-    
-    /**
-     * Takes argb color in hex, and converts to array of [0-255] ints for r,g,b,alpha
-     * @param argb hex color of format 0xAARRGGBB
-     * @return array of [0-255] ints with 3 colors r,g,b if no alpha given, or 
-     * 4 colors r,g,b,alpha if alpha present and non-zero
-     */
-    default int[] getClrFromHex(int argb) {
-        int b = argb & 0xFF;
-        int tmpRgb = argb>>8;
-        int g = tmpRgb & 0xFF;
-        tmpRgb >>= 8;
-        int r = tmpRgb & 0xFF;
-        tmpRgb >>= 8;
-        tmpRgb &= 0xFF;
-        if (tmpRgb > 0) {
-            return new int[] {r,g,b,tmpRgb};
-        }
-        // No alpha given, so 3 element array r,g,b
-        return new int[] {r,g,b};
-    }
-    /**
-     * return a randomly chosen color index as defined in IRenderInterface
-     * @return
-     */
-    public int getRndClrIndex();
-    
-    /**
-     * Return an array holding random 4-int stroke (idx 0) and fill (idx 1) color where the fill is a lighter, scaled version of the stroke
-     * @return
-     */
-    public int[][] getRndMatchedStrkFillClrs();
-    
-    /**
-     * Returns ARGB hex value of passed color values. Assumes r,g,b are all 0-255 range (forces alpha to 255)
-     * Mod 256 is performed on all values, so all rgb values should be [0,255]
-     */
-    default int getClrAsHex(int r, int g, int b) {
-        return 0xFF000000 + (r & 0xFF)<<16 + (g & 0xFF) << 8 + (b & 0xFF);
-    }
-    
-    /**
-     * Returns ARGB hex value of passed color values. Assumes r,g,b,alpha are all 0-255 range
-     * Mod 256 is performed on all values, so all rgb values should be [0,255]
-     */
-    default int getClrAsHex(int r, int g, int b, int alpha) {
-        int res = 0;
-        if (alpha > 0){res = ((alpha & 0xFF)<<24);}//A
-        return res + ((r & 0xFF)<<16) + ((g & 0xFF) << 8) + (b & 0xFF);
-    }
-    /**
-     * Returns ARGB hex value of passed RGB color value array. Assumes array values all 0-255 range
-     */
-    default int getClrAsHex(int[] clrs) {return getClrAsHex(clrs[0],clrs[1],clrs[2]);}
-    
-    /**
-     * Returns ARGB hex value of passed RGB color value array with alpha. Assumes array values and alpha all 0-255 range
-     */
-    default int getClrAsHex(int[] clrs, int alpha) {return getClrAsHex(clrs[0],clrs[1],clrs[2], alpha);}
-
-    /**
-     * Returns ARGB hex value of passed color expressed as point.  Assumes point representation is integer RGB range 0-255
-     */
-    default int getClrAsHex(myPoint p) {return getClrAsHex((int)p.x,(int)p.y,(int)p.z);}
-    /**
-     * Returns ARGB hex value of passed color expressed as point.  Assumes point representation is integer RGB range 0-255
-     */
-    default int getClrAsHex(myPointf p) {return getClrAsHex((int)p.x,(int)p.y,(int)p.z);}
-    /**
-     * Returns ARGB hex value of passed color expressed as point.  Assumes point representation is integer RGB range 0-255
-     */
-    default int getClrAsHex(myPoint p, int alpha){return getClrAsHex((int)p.x,(int)p.y,(int)p.z, alpha);}
-    /**
-     * Returns ARGB hex value of passed color expressed as point.  Assumes point representation is integer RGB range 0-255
-     */
-    default int getClrAsHex(myPointf p, int alpha){return getClrAsHex((int)p.x,(int)p.y,(int)p.z, alpha);}
-    
-    /**
-     * Returns alpha value [0-255] from passed hex color
-     */
-    default int getAlpha(int argb) {return (argb>>24)& 0xFF;}
-    /**
-     * Returns red value [0-255] from passed hex color
-     */
-    default int getRed(int argb) {return (argb>>16) & 0xFF;}
-    /**
-     * Returns green value [0-255] from passed hex color
-     */
-    default int getGreen(int argb) {return (argb>>8) & 0xFF;}
-    /**
-     * Returns blue value [0-255] from passed hex color
-     */
-    default int getBlue(int argb) {return argb & 0xFF;}
-    /**
-     * return an interpolation between two colors
-     * @param a Initial color, as integer array [0,255]
-     * @param b Final color, as integer array [0,255]
-     * @param t time value, between 0.0 and 1.0
-     * @return Integer array of color values [0,255] between a and b
-     */
-    public Integer[] getClrMorph(int[] a, int[] b, double t);
       
     /**
      * return x screen value for 3d point
@@ -497,10 +201,12 @@ public interface IRenderInterface {
 
     /**
      * used to handle camera location/motion
+     * Use a final rotateX(MyMathUtils.HALF_PI_F) is to the scene with z up
      */
     public void setCamOrient(float rx, float ry);
     /**
      * used to draw text on screen without changing mode - reverses camera orientation setting
+     * Use an initial rotateX(-MyMathUtils.HALF_PI_F) to remove the z-up orientation
      */
     public void unSetCamOrient(float rx, float ry);    
     
@@ -538,18 +244,6 @@ public interface IRenderInterface {
     //////
     // end camera functions and projection matrices
     
-    
-    /**
-     * translate by the given values
-     * @param x,y,z
-     */
-    public void translate(float x, float y);
-    default void translate(double x, double y) {translate((float)x,(float)y);    }
-    public void translate(float x, float y, float z);
-    default void translate(double x, double y, double z){translate((float)x,(float)y,(float)z);    }
-    default void translate(myPoint p){translate((float)p.x,(float)p.y,(float)p.z);}
-    default void translate(myPointf p){translate(p.x,p.y,p.z);}
-
     /**
      * this will translate the passed box dimensions to keep them on the screen
      * using p as start point and rectDims[2] and rectDims[3] as width and height
@@ -557,52 +251,52 @@ public interface IRenderInterface {
      * @param rectDims box dimensions 
      */
     public void transToStayOnScreen(myPointf P, float[] rectDims);    
+    
+    /////////////////
+    /// shape/mesh creation
     /**
-     * rotate by given theta around specified axis 
-     * @param thet
-     * @param x,y,z must be normalized
-     */
-    public void rotate(float thet, float x, float y, float z);
+     * Create a mesh shape
+     * @return
+     */    
+    public IMeshInterface createBaseMesh();  
     
     /**
-     * rotate by given theta around specified axis 
-     * @param thet
-     * @param axis must be normalized
-     */
-    default void rotate(float thet, myPoint axis) {rotate(thet, (float)axis.x,(float)axis.y,(float)axis.z);}
-    /**
-     * rotate by given theta around specified axis 
-     * @param thet
-     * @param axis must be normalized
-     */
-    default void rotate(float thet, myPointf axis){rotate(thet, axis.x,axis.y,axis.z);}
-    /**
-     * rotate by given theta around specified axis 
-     * @param thet
-     * @param x,y,z must be normalized
-     */
-    default void rotate(float thet, double x, double y, double z) {rotate(thet, (float)x,(float)y,(float)z);};
-
+     * Create a mesh shape
+     * @param type of mesh to create
+     * @return
+     */    
+    public IMeshInterface createBaseMesh(GL_PrimitiveType meshType);
     
     /**
-     * set scale by passed values
+     * Create a primitive shape
+     * @param primType
+     * @param params essential parameters required to build this construct (i.e. sphere radius)
+     * @return
      */
-    public void scale(float x);
-    public void scale(float x, float y);
-    public void scale(float x, float y, float z);
-
-    default void scale(double x) {scale((float)x);}
-    default void scale(double x,double y) {scale((float)x,(float)y);}
-    default void scale(double x, double y, double z) {scale((float)x,(float)y,(float)z);}    
-
+    public IPrimShapeInterface createBasePrim(PrimitiveType primType, float... params);   
+    
+    /**
+     * Create a mesh shape intended to be the parent of a group of shapes/meshes
+     * @return
+     */  
+    public IMeshInterface createBaseGroupMesh();
+    
+    /**
+     * Create a basic IMeshInterface and apply an initial transform to it. glBegin will specify the shape
+     * @param transVec First applied transform - initial translation
+     * @param scaleVec Scale applied after translate
+     * @param rotAra First applied rotation
+     * @param trans2Vec 2nd Applied translation
+     * @param rotAra2 2nd Applied rotation
+     * @param trans3Vec 3rd Applied translation
+     * @param rotAra3 3rd Applied rotation
+     * @return PShape created and transformed using passed transforms
+     */
+    public IMeshInterface createBaseMeshAndSetInitialTransform(myPointf transVec, myPointf scaleVec, float[] rotAra, myPointf trans2Vec, float[] rotAra2, myPointf trans3Vec, float[] rotAra3);
+    
     
     ///////////////////////
     // display directives
-    
-    /**
-     * Loop to execute program code and render buffers.
-     */
-    public void draw();
     
     /**
      * opengl hint directive to not check for depth - use this to display text on screen
@@ -659,98 +353,7 @@ public interface IRenderInterface {
      * @param winIdx index of window to set 
      */
     public void drawBkgndSphere(int winIdx);
-    
-    /**
-     * set fill color by value
-     * @param clr 1st 3 values denote integer color vals
-     * @param alpha 
-     */
-    public void setFill(int r, int g, int b, int alpha);
-    
-    /**
-     * Turn off fill
-     */
-    public void setNoFill();
-    
-    /**
-     * Set fill color by passed hex argb color, assumes alpha >0, otherwise forces to be 255
-     * @param rgb 
-     */
-    default void setFill(int argb) {
-        int b = argb & 0xFF;
-        int tmpRgb = argb>>8;
-        int g = tmpRgb & 0xFF;
-        tmpRgb >>= 8;
-        int r = tmpRgb & 0xFF;
-        tmpRgb >>= 8;
-        int alpha = tmpRgb > 0 ? tmpRgb : 255;  
-        setFill(r,g,b,alpha);
-    }
-    
-    default void setFill(int[] clr, int alpha) {setFill(clr[0],clr[1],clr[2],alpha);}
-    /**
-     * set fill color based on passed constant color index
-     * @param colorVal constant color index
-     * @param alpha desired alpha
-     */
-    public void setColorValFill(int colorVal, int alpha);
 
-    /**
-     * set stroke color by value
-     * @param clr rgba
-     * @param alpha 
-     */
-    public void setStroke(int r, int g, int b, int alpha);
-    
-    /**
-     * Turn off stroke
-     */
-    public void setNoStroke();
-    
-    /**
-     * Set stroke color by passed hex argb color, assumes alpha >0, otherwise forces to be 255
-     * @param rgb 
-     */
-    default void setStroke(int argb) {
-        int b = argb & 0xFF;
-        int tmpRgb = argb>>8;
-        int g = tmpRgb & 0xFF;
-        tmpRgb >>= 8;
-        int r = tmpRgb & 0xFF;
-        tmpRgb >>= 8;
-        int alpha = tmpRgb > 0 ? tmpRgb : 255;  
-        setStroke(r,g,b,alpha);
-    }
-    default void setStroke(int[] clr, int alpha) {setStroke(clr[0],clr[1],clr[2],alpha);}
-    
-    /**
-     * set stroke color based on passed constant color index
-     * @param colorVal constant color index
-     * @param alpha desired alpha
-     */
-    public void setColorValStroke(int colorVal, int alpha);
-    
-    /**
-     * set ambient fill color based on passed constant color index
-     * @param colorVal constant color index
-     * @param alpha desired alpha
-     */
-    public void setColorValFillAmb(int colorVal, int alpha);
-    
-    /**
-     * tell current drawing cycle that there should be no stroke 
-     */
-    public void noStroke();
-    
-    /**
-     * tell current drawing cycle that there should be no Fill Color 
-     */
-    public void noFill();
-    
-    /**
-     * set stroke weight
-     */
-    public void setStrokeWt(float stW);
     /**
      * set general detail of sphere to be synthesized and drawn
      * @param det
@@ -761,51 +364,6 @@ public interface IRenderInterface {
      * @return
      */
     public int getSphereDetail();
-    
-    /////////////////////////
-    // display objects
-     /**
-      * changes normal for smooth shading
-      * @param V
-      */
-    public void gl_normal(float x, float y, float z);          
-    default void gl_normal(myVector V) {gl_normal((float)V.x, (float)V.y, (float)V.z);}          
-    default void gl_normal(myVectorf V) {gl_normal(V.x, V.y, V.z);}   
-    /**
-     * vertex for drawing shapes
-     * @param P
-     */
-    public void gl_vertex(float x, float y, float z);   
-    default void gl_vertex(myPoint V) {gl_vertex((float)V.x, (float)V.y, (float)V.z);}          
-    default void gl_vertex(myPointf V) {gl_vertex(V.x, V.y, V.z);}   
-    
-    /**
-     * set fill color by value during shape building
-     * @param clr 1st 3 values denote integer color vals
-     * @param alpha 
-     */
-    public void gl_setFill(int r, int g, int b, int alpha);
-    default void gl_setFill(int[] clr, int alpha) {gl_setFill(clr[0],clr[1],clr[2],alpha);}
-
-    /**
-     * set stroke color by value during shape building
-     * @param clr rgba
-     * @param alpha 
-     */
-    public void gl_setStroke(int r, int g, int b, int alpha);
-    default void gl_setStroke(int[] clr, int alpha) {gl_setStroke(clr[0],clr[1],clr[2],alpha);}
-    /**
-     * begin an open gl shape
-     * @param type
-     */
-    public void gl_beginShape(GL_PrimStyle primType);
-    default void gl_beginShape() {gl_beginShape(GL_PrimStyle.GL_LINE_LOOP);}
-    /**
-     * end an open gl shape
-     * @param isClosed Whether shape is closed or not
-     */    
-    public void gl_endShape(boolean isClosed);
-    default void gl_endShape() {gl_endShape(false);}
     
     ///////////////////////
     // point cloud
@@ -1029,6 +587,10 @@ public interface IRenderInterface {
      * @param a 4 element array : x,y,w,h
      */
     public void drawRect(float a, float b, float c, float d);
+    /**
+     * draw a rectangle in 2D using the passed values as [x,y,w,h]
+     * @param a array holding x,y,w,h
+     */
     default void drawRect(float[] a) {drawRect(a[0],a[1],a[2],a[3]);}
     
     /**
@@ -1057,43 +619,91 @@ public interface IRenderInterface {
     public void drawTriangle2D(myPoint a, myPoint b, myPoint c);
     
     /**
-     * draw a cylinder frame centered at 2 points, with end cap colors
-     * @param A
-     * @param B
-     * @param r
-     * @param c1
-     * @param c2
+     * Draw a cylinder frame centered at 2 points, with end cap colors
+     * @param A center of one end-cap of cylinder
+     * @param B center of the other end-cap of cylinder
+     * @param r radius of desired cylinder
+     * @param c1 predefined color constant for color at end-cap A
+     * @param c2 predefined color constant for color at end-cap B
      */
-    public void drawCylinder_NoFill(myPoint A, myPoint B, double r, int c1, int c2);
+    default void drawCylinder_NoFill(myPoint A, myPoint B, double r, int c1, int c2) {
+        drawCylinder_NoFill(A, B, r, getClr(c1, 255), getClr(c2, 255));
+    }
     /**
-     * draw a cylinder frame centered at 2 points, with end cap colors
-     * @param A
-     * @param B
-     * @param r
-     * @param c1
-     * @param c2
+     * Draw a cylinder frame centered at 2 points, with end cap colors
+     * @param A center of one end-cap of cylinder
+     * @param B center of the other end-cap of cylinder
+     * @param r radius of desired cylinder
+     * @param c1 predefined color constant for color at end-cap A
+     * @param c2 predefined color constant for color at end-cap B
      */
-    public void drawCylinder_NoFill(myPointf A, myPointf B, float r, int c1, int c2);
+    default void drawCylinder_NoFill(myPointf A, myPointf B, float r, int c1, int c2) {
+        drawCylinder_NoFill(A, B, r, getClr(c1, 255), getClr(c2, 255));
+    }
 
     /**
-     * draw a cylinder centered at 2 points, with end cap colors
-     * @param A
-     * @param B
-     * @param r
-     * @param c1
-     * @param c2
-     */    
-    public void drawCylinder(myPoint A, myPoint B, double r, int c1, int c2);
+     * Draw a cylinder frame centered at 2 points, with end cap colors
+     * @param A center of one end-cap of cylinder
+     * @param B center of the other end-cap of cylinder
+     * @param r radius of desired cylinder
+     * @param c1 color at end-cap A
+     * @param c2 color at end-cap B
+     */
+    public void drawCylinder_NoFill(myPoint A, myPoint B, double r, int[] c1, int[] c2);
+    /**
+     * Draw a cylinder frame centered at 2 points, with end cap colors
+     * @param A center of one end-cap of cylinder
+     * @param B center of the other end-cap of cylinder
+     * @param r radius of desired cylinder
+     * @param c1 color at end-cap A
+     * @param c2 color at end-cap B
+     */
+    public void drawCylinder_NoFill(myPointf A, myPointf B, float r, int[] c1, int[] c2);
+    
     
     /**
-     * draw a cylinder centered at 2 points, with end cap colors
-     * @param A
-     * @param B
-     * @param r
-     * @param c1
-     * @param c2
+     * Draw a cylinder centered at 2 points, with end cap colors
+     * @param A center of one end-cap of cylinder
+     * @param B center of the other end-cap of cylinder
+     * @param r radius of desired cylinder
+     * @param c1 predefined color constant for color at end-cap A
+     * @param c2 predefined color constant for color at end-cap B
+     */    
+    default void drawCylinder(myPoint A, myPoint B, double r, int c1, int c2) {
+        drawCylinder(A, B, r, getClr(c1, 255), getClr(c2, 255));
+    }
+    
+    /**
+     * Draw a cylinder centered at 2 points, with end cap colors
+     * @param A center of one end-cap of cylinder
+     * @param B center of the other end-cap of cylinder
+     * @param r radius of desired cylinder
+     * @param c1 predefined color constant for color at end-cap A
+     * @param c2 predefined color constant for color at end-cap B
      */
-    public void drawCylinder(myPointf A, myPointf B, float r, int c1, int c2);
+    default void drawCylinder(myPointf A, myPointf B, float r, int c1, int c2) {
+        drawCylinder(A, B, r, getClr(c1, 255), getClr(c2, 255));
+    }
+    
+    /**
+     * Draw a cylinder centered at 2 points, with end cap colors
+     * @param A center of one end-cap of cylinder
+     * @param B center of the other end-cap of cylinder
+     * @param r radius of desired cylinder
+     * @param c1 color at end-cap A
+     * @param c2 color at end-cap B
+     */    
+    public void drawCylinder(myPoint A, myPoint B, double r, int[] c1, int[] c2);
+    
+    /**
+     * Draw a cylinder centered at 2 points, with end cap colors
+     * @param A center of one end-cap of cylinder
+     * @param B center of the other end-cap of cylinder
+     * @param r radius of desired cylinder
+     * @param c1 color at end-cap A
+     * @param c2 color at end-cap B
+     */
+    public void drawCylinder(myPointf A, myPointf B, float r, int[] c1, int[] c2);
     
     /**
      * Draw a shape from the passed myPoint ara
@@ -1389,5 +999,5 @@ public interface IRenderInterface {
      * @param size
      */
     public void setTextSize(float size);
-    
-}//IRenderInterface
+
+}//IGraphicsAppInterface
